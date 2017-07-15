@@ -1,0 +1,22 @@
+{
+  "name": "tune-in",
+  "version": "1.0.0",
+  "description": "Tune into Spotify with a friend!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tanyax/tune-in.git"
+  },
+  "author": "Tanya Verma",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tanyax/tune-in/issues"
+  },
+  "homepage": "https://github.com/tanyax/tune-in#readme",
+  "dependencies": {
+    "express": "^4.15.3"
+  }
+}
