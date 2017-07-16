@@ -14,9 +14,5 @@ app.use(express.static('./public'))
 
 authController(app);
 
-// if(accessToken != "invalid") {
-//   userController(app, accessToken);
-// }
-
 app.listen(process.env.PORT || 4000);
 console.log("Listening to port 4000...");

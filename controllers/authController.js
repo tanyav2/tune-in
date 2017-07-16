@@ -5,11 +5,16 @@
 
 var request = require('request'); // "Request" library
 var querystring = require('querystring');
+var bodyParser = require('body-parser');
+
+var urlencodedParser = bodyParser.urlencoded({extended: false});
 
 var client_id = 'ce4ce67743644998819427206dadbf9e'; // Your client id
 var client_secret = '634f0b430300464db6bd616fec5b49a9'; // Your secret
 var BASE_REDIRECT_URI = "http://localhost:4000";
 var redirect_uri = '/callback'; // Your redirect uri
+
+var user_data = null;
 
 /**
  * Generates a random string containing numbers and letters
@@ -83,8 +88,8 @@ module.exports = function(app){
       request.post(authOptions, function(error, response, body) {
         if (!error && response.statusCode === 200) {
 
-          var access_token = body.access_token,
-              refresh_token = body.refresh_token;
+          access_token = body.access_token;
+          refresh_token = body.refresh_token;
 
           var options = {
             url: 'https://api.spotify.com/v1/me',
@@ -95,6 +100,7 @@ module.exports = function(app){
           // use the access token to access the Spotify Web API
           request.get(options, function(error, response, body) {
             console.log(body);
+            user_data = body;
           });
 
           // we can also pass the token to the browser to make requests from there
@@ -138,7 +144,7 @@ module.exports = function(app){
   });
 
   app.get('/tune-in', function(req, res){
-    res.render('auth');
+    res.render('active', {user_info: user_data});
   });
 
 };

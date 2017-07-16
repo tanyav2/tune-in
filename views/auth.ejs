@@ -139,8 +139,10 @@
           document.getElementById('tune-in').addEventListener('click', function() {
             $.ajax({
               type: 'GET',
-              url: 'http://localhost:4000/tune-in',
-              success: function(){
+              url: '/tune-in',
+              success: function(data){
+                console.log(data);
+                $("html").html(data);
                 console.log("tune-in home page");
               }
             });
