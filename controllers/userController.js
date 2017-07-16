@@ -1,8 +1,10 @@
 var data = [{item: "get milk"}];
+var bodyParser = require('body-parser');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+var urlencodedParser = bodyParser.urlencoded({extended: false});
 var _baseUri = 'https://api.spotify.com/v1';
 var _accessToken = 'BQBsHn0Y48scCHI4Ag87IraxzYbuItdVFi3HlcpkRb_8VWij560a-aTVTHY0qKGfgSIptPYjVIc2IpYyYffjY_xjpM7wYYLTKy1wBl1euq5Q0gzBhong1lbRWbRIlFaVsRoMiZQwuz7i2nccRA4oZ7p5YzMWY0adLoP1D03DO5vypVUbSGn3LpU';
-
+var spotifyData = null;
 var _buildUrl = function(url, parameters) {
   var qs = '';
   for (var key in parameters) {
@@ -128,21 +130,23 @@ var getArtistAlbums = function(artistId, options, callback) {
 
 module.exports = function(app){
   app.get('/', function(req, res){
-    res.render('index');
+    res.render('auth');
   });
 
   app.post('/submitted', function(req, res){
     console.log('Submit button clicked');
-    getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE', function(err, data) {
-  if (err) console.error(err);
-  else console.log('Artist albums', data);
-});
     res.status(200);
     res.end();
   });
 
-  app.get('/submitted.html', function(req, res){
-    res.render('submitted');
+  app.get('/submitted.html/:id', function(req, res){
+    getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE', function(err, data) {
+  if (err) console.error(err);
+  else {console.log('Artist albums', data);
+        spotifyData = data.body;
+      }
+});
+    res.render('submitted', {person: req.params.id});
   });
 
 };
