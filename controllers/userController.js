@@ -146,25 +146,78 @@ var transferMyPlayback = function(deviceIds, options, callback) {
     return _checkParamsAndPerformRequest(requestData, options, callback);
   };
 
-module.exports = function(app, my_uri, friend_uri){
-  app.get('/', function(req, res){
-    res.render('auth');
-  });
-
-  app.post('/submitted', function(req, res){
-    console.log('Submit button clicked');
-    res.status(200);
-    res.end();
-  });
-
-  app.get('/submitted.html/:id', function(req, res){
-    getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE', function(err, data) {
-  if (err) console.error(err);
-  else {console.log('Artist albums', data);
-        spotifyData = data.body;
+  var play = function(options, callback) {
+    var params = 'device_id' in options ? {device_id: options.device_id} : null;
+    var postData = {};
+    ['context_uri', 'uris', 'offset'].forEach(function(field) {
+      if (field in options) {
+        postData[field] = options[field];
       }
-});
-    res.render('submitted', {person: req.params.id});
-  });
+    });
+    var requestData = {
+      type: 'PUT',
+      url: _baseUri + '/me/player/play',
+      params: params,
+      postData: postData
+    };
 
-};
+    // need to clear options so it doesn't add all of them to the query params
+    var newOptions = typeof options === 'function' ? options : {};
+    return _checkParamsAndPerformRequest(requestData, newOptions, callback);
+  };
+
+  var seek = function(position_ms, options, callback) {
+    var params = {
+      position_ms: position_ms
+    };
+    if ('device_id' in options) {
+      params.device_id = options.device_id;
+    }
+    var requestData = {
+      type: 'PUT',
+      url: _baseUri + '/me/player/seek',
+      params: params
+    };
+    return _checkParamsAndPerformRequest(requestData, options, callback);
+  };
+
+
+
+module.exports = function(app, me, friend){
+//   app.get('/', function(req, res){
+//     res.render('auth');
+//   });
+//
+//   app.post('/submitted', function(req, res){
+//     console.log('Submit button clicked');
+//     res.status(200);
+//     res.end();
+//   });
+//
+//   app.get('/submitted.html/:id', function(req, res){
+//     getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE', function(err, data) {
+//   if (err) console.error(err);
+//   else {console.log('Artist albums', data);
+//         spotifyData = data.body;
+//       }
+// });
+//     res.render('submitted', {person: req.params.id});
+//   });
+var progress;
+var trackuri;
+getMyCurrentPlayingTrack(function(err, data){
+  if(err) console.error(err);
+  else {
+    spotifyData = data.body;
+
+    if(spotifyData.is_playing) {
+      progress = spotifyData.progress_ms;
+      trackuri = spotifyData.item.uri;
+    }
+  }
+});
+
+
+play(); //trackuri // change access token
+
+seek(); // progress 

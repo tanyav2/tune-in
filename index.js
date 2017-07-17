@@ -6,7 +6,7 @@ var count = 0;
 // userController takes care of rendering the view and
 // routing requests to the server
 var authController = require('./controllers/authController');
-var userController = require('./controllers/userController');
+//var userController = require('./controllers/userController');
 
 var app = express();
 
@@ -18,7 +18,8 @@ var server = app.listen(process.env.PORT || 4000);
 console.log("Listening to port 4000...");
 var io = socket(server);
 
-io.on('connection', function(socket){
+
+io.of('/tune-in').on('connection', function(socket){
   count++;
   //console.log('Made socket connection', socket.handshake.query);
   socket.broadcast.emit('users', socket.handshake.query);
@@ -26,12 +27,12 @@ io.on('connection', function(socket){
 
   socket.on('friend', function(data){
     // Get my playback
-    console.log("me: ", data.my_uri);
+    console.log("me xxxyy: ", data.me);
 
     // Set friend's playback to my playback
-    console.log("friend: ", data.friend_uri);
+    console.log("friend xxxyy: ", data.friend);
 
-    //userController(app, data.my_uri, data.friend_uri);
+    //userController(app, data.me, data.friend);
   });
 });
 
