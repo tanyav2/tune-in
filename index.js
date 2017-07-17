@@ -6,7 +6,7 @@ var count = 0;
 // userController takes care of rendering the view and
 // routing requests to the server
 var authController = require('./controllers/authController');
-//var userController = require('./controllers/userController');
+var userController = require('./controllers/userController');
 
 var app = express();
 
@@ -32,7 +32,7 @@ io.of('/tune-in').on('connection', function(socket){
     // Set friend's playback to my playback
     console.log("friend xxxyy: ", data.friend);
 
-    //userController(app, data.me, data.friend);
+    userController(app, data.me, data.friend);
   });
 });
 
