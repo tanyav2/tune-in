@@ -3,10 +3,22 @@
   <head>
     <meta charset="utf-8">
     <title>Active</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="http://localhost:4000/socket.io/socket.io.js"></script>
   </head>
   <body>
     <p>
-      <%= user_info.display_name %>
+      Welcome,
+      <%= user_info.uri %>
     </p>
+    <ul id="active"></ul>
+    <script>
+    var socket = io.connect('http://localhost:4000/tune-in', {query: <%- JSON.stringify(user_info) %>});
+    var active = document.getElementById('active');
+    socket.on('users', function(data){
+      console.log('do you go here');
+      active.innerHTML += "<li><em>" + data.display_name + " is connected" + "</em></li>";
+    });
+    </script>
   </body>
 </html>
