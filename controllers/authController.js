@@ -91,6 +91,7 @@ module.exports = function(app){
           access_token = body.access_token;
           refresh_token = body.refresh_token;
 
+
           var options = {
             url: 'https://api.spotify.com/v1/me',
             headers: { 'Authorization': 'Bearer ' + access_token },
@@ -144,6 +145,8 @@ module.exports = function(app){
   });
 
   app.get('/tune-in', function(req, res){
+    user_data.access_token = access_token;
+    user_data.refresh_token = refresh_token;
     res.render('active', {user_info: user_data});
   });
 

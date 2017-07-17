@@ -128,7 +128,25 @@ var getArtistAlbums = function(artistId, options, callback) {
     return _checkParamsAndPerformRequest(requestData, options, callback);
   };
 
-module.exports = function(app){
+var getMyCurrentPlayingTrack = function(options, callback) {
+    var requestData = {
+      url: _baseUri + '/me/player/currently-playing'
+    };
+    return _checkParamsAndPerformRequest(requestData, options, callback);
+  };
+
+var transferMyPlayback = function(deviceIds, options, callback) {
+    var postData = options || {};
+    postData.device_ids = deviceIds;
+    var requestData = {
+      type: 'PUT',
+      url: _baseUri + '/me/player',
+      postData: postData
+    };
+    return _checkParamsAndPerformRequest(requestData, options, callback);
+  };
+
+module.exports = function(app, my_uri, friend_uri){
   app.get('/', function(req, res){
     res.render('auth');
   });

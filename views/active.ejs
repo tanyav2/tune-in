@@ -11,14 +11,43 @@
       Welcome,
       <%= user_info.uri %>
     </p>
-    <ul id="active"></ul>
+    <ul id="active">
+      <li class="faker">Item 1</li>
+      <li class="faker">Item 2</li>
+    </ul>
+    <div id="friend"></div>
     <script>
-    var socket = io.connect('http://localhost:4000/tune-in', {query: <%- JSON.stringify(user_info) %>});
-    var active = document.getElementById('active');
-    socket.on('users', function(data){
-      console.log('do you go here');
-      active.innerHTML += "<li><em>" + data.display_name + " is connected" + "</em></li>";
-    });
+
+      var socket = io.connect('http://localhost:4000/tune-in', {query: <%- JSON.stringify(user_info) %>});
+      var active = document.getElementById('active');
+      var fakers = document.getElementsByClassName('faker');
+
+      var friend_data = {};
+
+      socket.on('users', function(data){
+        console.log('do you go here');
+        friend_data[data.uri] = data;
+        active.innerHTML += "<li>" + data.uri + "</li>";
+      });
+
+      for(var i = 0; i < fakers.length; i++) {
+        fakers[i].addEventListener('click', cb, false);
+      }
+      function cb(){
+        console.log(this);
+        friend.innerHTML = "<p>" + "You are connected to " + this.innerText + "</p>";
+      }
+
+
+      // $('#faker').on('click', function(){
+      //   var item = $(this).text().replace(/ /g, "-");
+      //   // friend.innerHTML = "<p>" + "You are connected to " + li.value + "</p>";
+      //   // socket.emit('friend', {
+      //   //   my_uri: user_info.uri,
+      //   //   friend_uri: li.value
+      //   // });
+      // });
+
     </script>
   </body>
 </html>
