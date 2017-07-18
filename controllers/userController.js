@@ -230,26 +230,6 @@ module.exports = function(app, me, friend){
       _accessToken = accessToken;
     };
 
-
-//   app.get('/', function(req, res){
-//     res.render('auth');
-//   });
-//
-//   app.post('/submitted', function(req, res){
-//     console.log('Submit button clicked');
-//     res.status(200);
-//     res.end();
-//   });
-//
-//   app.get('/submitted.html/:id', function(req, res){
-//     getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE', function(err, data) {
-//   if (err) console.error(err);
-//   else {console.log('Artist albums', data);
-//         spotifyData = data.body;
-//       }
-// });
-//     res.render('submitted', {person: req.params.id});
-//   });
 var progress = null;
 var trackuri = null;
 
@@ -264,23 +244,20 @@ getMyCurrentPlayingTrack(function(err, data){
       progress = data.progress_ms;
       trackuri = data.item.uri;
     }
-    console.log(data);
+    setAccessToken(friend.access_token);
+
+    play({"uris":[trackuri]}, function(err, data){
+      if (err) console.error(err);
+      else {
+        seek(progress, function(err, data){
+          if (err) console.error(err); 
+        });
+      }
+    });
   }
 });
 
-//setAccessToken(friend.access_token);
 
-play({"uris":["spotify:track:3twQx3psUMJKj4wna5d1zU"]}, function(err, data){
-  if (err) console.error(err);
-});
-
-
-
-
-
-
-
-//play(); //trackuri // change access token
 
 //seek(); // progress
 };

@@ -11,7 +11,7 @@ var urlencodedParser = bodyParser.urlencoded({extended: false});
 
 var client_id = 'ce4ce67743644998819427206dadbf9e'; // Your client id
 var client_secret = '634f0b430300464db6bd616fec5b49a9'; // Your secret
-var BASE_REDIRECT_URI = "http://localhost:4000";
+var BASE_REDIRECT_URI = "http://10.194.148.215:4000";
 var redirect_uri = '/callback'; // Your redirect uri
 
 var user_data = null;
